@@ -1,7 +1,5 @@
 #include <QApplication>
-#include <QMainWindow>
-
-#include "FourierWidget.h"
+#include "src/MyMainWindow.hpp"
 
 const double width = 900;
 const double height = 900;
@@ -10,13 +8,8 @@ int main(int argc, char **argv)
 {
 
   QApplication app(argc, argv);
-  QMainWindow w;
-  FourierWidget *drawArea = new FourierWidget(width, height);
-  w.setMinimumSize(width, height);
-  
-
-  w.setCentralWidget(drawArea);
-  w.show();
+  MyMainWindow *w = new MyMainWindow(width, height);
+  w->show();
   app.exec();
 
   return 0;

@@ -1,2 +1,8 @@
+# Qt compiled
 *.o
-qt
+
+#Qt executable
+QtFourier
+
+#Qt temp objects
+moc*
