@@ -1,7 +1,11 @@
 #ifndef WAVES_ENUM_HPP
 #define WAVES_ENUM_HPP
 
-enum Waves{
+/**
+ * Rapresent all the different function types supported
+ */
+enum Waves
+{
     SAW_WAVE,
     SQUARED_WAVE
 };

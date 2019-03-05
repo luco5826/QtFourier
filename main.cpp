@@ -8,9 +8,12 @@ int main(int argc, char **argv)
 {
 
   QApplication app(argc, argv);
+
   MyMainWindow *w = new MyMainWindow(width, height);
   w->show();
+
   app.exec();
 
+  delete w;
   return 0;
 }

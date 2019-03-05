@@ -51,11 +51,17 @@ OBJECTS_DIR   = ./
 ####### Files
 
 SOURCES       = main.cpp \
-		src/FourierWidget.cpp moc_MyMainWindow.cpp \
+		src/FourierWidget.cpp \
+		src/SettingsWidget.cpp \
+		src/WaveSelectionWidget.cpp moc_MyMainWindow.cpp \
+		moc_SettingsWidget.cpp \
 		moc_WaveSelectionWidget.cpp
 OBJECTS       = main.o \
 		FourierWidget.o \
+		SettingsWidget.o \
+		WaveSelectionWidget.o \
 		moc_MyMainWindow.o \
+		moc_SettingsWidget.o \
 		moc_WaveSelectionWidget.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/unix.conf \
@@ -141,9 +147,13 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf \
 		QtFourier.pro src/FourierWidget.h \
 		src/MyMainWindow.hpp \
-		src/WaveSelectionWidget.hpp \
+		src/Settings.hpp \
+		src/SettingsWidget.h \
+		src/WaveSelectionWidget.h \
 		src/WavesEnum.hpp main.cpp \
-		src/FourierWidget.cpp
+		src/FourierWidget.cpp \
+		src/SettingsWidget.cpp \
+		src/WaveSelectionWidget.cpp
 QMAKE_TARGET  = QtFourier
 DESTDIR       = 
 TARGET        = QtFourier
@@ -343,8 +353,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents src/FourierWidget.h src/MyMainWindow.hpp src/WaveSelectionWidget.hpp src/WavesEnum.hpp $(DISTDIR)/
-	$(COPY_FILE) --parents main.cpp src/FourierWidget.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents src/FourierWidget.h src/MyMainWindow.hpp src/Settings.hpp src/SettingsWidget.h src/WaveSelectionWidget.h src/WavesEnum.hpp $(DISTDIR)/
+	$(COPY_FILE) --parents main.cpp src/FourierWidget.cpp src/SettingsWidget.cpp src/WaveSelectionWidget.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -376,22 +386,29 @@ compiler_moc_predefs_clean:
 moc_predefs.h: /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp
 	g++ -pipe -O2 -Wall -W -dM -E -o moc_predefs.h /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all: moc_MyMainWindow.cpp moc_WaveSelectionWidget.cpp
+compiler_moc_header_make_all: moc_MyMainWindow.cpp moc_SettingsWidget.cpp moc_WaveSelectionWidget.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_MyMainWindow.cpp moc_WaveSelectionWidget.cpp
+	-$(DEL_FILE) moc_MyMainWindow.cpp moc_SettingsWidget.cpp moc_WaveSelectionWidget.cpp
 moc_MyMainWindow.cpp: src/FourierWidget.h \
 		src/WavesEnum.hpp \
-		src/WaveSelectionWidget.hpp \
+		src/Settings.hpp \
+		src/WaveSelectionWidget.h \
 		src/MyMainWindow.hpp \
 		moc_predefs.h \
 		/usr/lib/qt5/bin/moc
 	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/luca/Modelli/QtFourier/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/luca/Modelli/QtFourier -I/home/luca/Modelli/QtFourier -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/8 -I/usr/include/x86_64-linux-gnu/c++/8 -I/usr/include/c++/8/backward -I/usr/lib/gcc/x86_64-linux-gnu/8/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/8/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include src/MyMainWindow.hpp -o moc_MyMainWindow.cpp
 
-moc_WaveSelectionWidget.cpp: src/WavesEnum.hpp \
-		src/WaveSelectionWidget.hpp \
+moc_SettingsWidget.cpp: src/Settings.hpp \
+		src/SettingsWidget.h \
 		moc_predefs.h \
 		/usr/lib/qt5/bin/moc
-	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/luca/Modelli/QtFourier/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/luca/Modelli/QtFourier -I/home/luca/Modelli/QtFourier -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/8 -I/usr/include/x86_64-linux-gnu/c++/8 -I/usr/include/c++/8/backward -I/usr/lib/gcc/x86_64-linux-gnu/8/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/8/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include src/WaveSelectionWidget.hpp -o moc_WaveSelectionWidget.cpp
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/luca/Modelli/QtFourier/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/luca/Modelli/QtFourier -I/home/luca/Modelli/QtFourier -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/8 -I/usr/include/x86_64-linux-gnu/c++/8 -I/usr/include/c++/8/backward -I/usr/lib/gcc/x86_64-linux-gnu/8/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/8/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include src/SettingsWidget.h -o moc_SettingsWidget.cpp
+
+moc_WaveSelectionWidget.cpp: src/WavesEnum.hpp \
+		src/WaveSelectionWidget.h \
+		moc_predefs.h \
+		/usr/lib/qt5/bin/moc
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/luca/Modelli/QtFourier/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/luca/Modelli/QtFourier -I/home/luca/Modelli/QtFourier -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/8 -I/usr/include/x86_64-linux-gnu/c++/8 -I/usr/include/c++/8/backward -I/usr/lib/gcc/x86_64-linux-gnu/8/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/8/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include src/WaveSelectionWidget.h -o moc_WaveSelectionWidget.cpp
 
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
@@ -412,15 +429,28 @@ compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean
 main.o: main.cpp src/MyMainWindow.hpp \
 		src/FourierWidget.h \
 		src/WavesEnum.hpp \
-		src/WaveSelectionWidget.hpp
+		src/Settings.hpp \
+		src/WaveSelectionWidget.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o main.cpp
 
 FourierWidget.o: src/FourierWidget.cpp src/FourierWidget.h \
-		src/WavesEnum.hpp
+		src/WavesEnum.hpp \
+		src/Settings.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o FourierWidget.o src/FourierWidget.cpp
+
+SettingsWidget.o: src/SettingsWidget.cpp src/SettingsWidget.h \
+		src/Settings.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o SettingsWidget.o src/SettingsWidget.cpp
+
+WaveSelectionWidget.o: src/WaveSelectionWidget.cpp src/WaveSelectionWidget.h \
+		src/WavesEnum.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o WaveSelectionWidget.o src/WaveSelectionWidget.cpp
 
 moc_MyMainWindow.o: moc_MyMainWindow.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_MyMainWindow.o moc_MyMainWindow.cpp
+
+moc_SettingsWidget.o: moc_SettingsWidget.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_SettingsWidget.o moc_SettingsWidget.cpp
 
 moc_WaveSelectionWidget.o: moc_WaveSelectionWidget.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_WaveSelectionWidget.o moc_WaveSelectionWidget.cpp
